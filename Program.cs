@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CsvHelper;
+using Microsoft.Extensions.Configuration;
 using SpotifyAPI.Web;
 class Program
 {
@@ -9,13 +10,19 @@ class Program
     {
         Console.WriteLine("Start");
 
-        var config = SpotifyClientConfig.CreateDefault();
-        var request = new ClientCredentialsRequest("x", "x");
-        var response = await new OAuthClient(config).RequestToken(request);
-        _spotify = new SpotifyClient(config.WithToken(response.AccessToken));
+        var builder = new ConfigurationBuilder().AddUserSecrets<Program>();
+        var configuration = builder.Build();
+
+        var clientId = configuration["Spotify:ClientId"] ?? string.Empty;
+        var clientSecret = configuration["Spotify:ClientSecret"] ?? string.Empty;
+
+        var spotifyConfig = SpotifyClientConfig.CreateDefault();
+        var request = new ClientCredentialsRequest(clientId, clientSecret);
+        var response = await new OAuthClient(spotifyConfig).RequestToken(request);
+        _spotify = new SpotifyClient(spotifyConfig.WithToken(response.AccessToken));
 
         await FetchPlAsync("0BBjPYvDcKOUF1P5GRB8W7", "c:\\junk\\xmas.csv");
-        await FetchPlAsync("2f2n3QUliEghhxDpI64XXP", "c:\\junk\\xmas2021.csv");
+        await FetchPlAsync("5hFUdgYsZrd1eAsOufSbEF", "c:\\junk\\xmas2024.csv");
 
         Console.WriteLine("End");
     }
