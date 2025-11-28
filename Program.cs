@@ -21,8 +21,8 @@ class Program
         var response = await new OAuthClient(spotifyConfig).RequestToken(request);
         _spotify = new SpotifyClient(spotifyConfig.WithToken(response.AccessToken));
 
-        await FetchPlAsync("0BBjPYvDcKOUF1P5GRB8W7", "c:\\junk\\xmas.csv");
-        await FetchPlAsync("5hFUdgYsZrd1eAsOufSbEF", "c:\\junk\\xmas2024.csv");
+        await FetchPlAsync("0BBjPYvDcKOUF1P5GRB8W7", "/mnt/c/junk/xmas.csv");
+        await FetchPlAsync("5hFUdgYsZrd1eAsOufSbEF", "/mnt/c/junk/xmas2024.csv");
 
         Console.WriteLine("End");
     }
